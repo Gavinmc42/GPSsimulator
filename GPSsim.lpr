@@ -26,24 +26,24 @@ uses
   Threads,
   Console,
   Framebuffer,
-  BCM2835,
+  BCM2836,
   SysUtils,
   serial,
   Classes,     {Include the common classes}
   FileSystem,  {Include the file system core and interfaces}
   FATFS,       {Include the FAT file system driver}
   MMC,         {Include the MMC/SD core to access our SD card}
-  BCM2708;     {And also include the MMC/SD driver for the Raspberry Pi}
+  BCM2709;     {And also include the MMC/SD driver for the Raspberry Pi}
 
 {A window handle plus a couple of others.}
 var
- Count:Integer;
+ Count:Longword;
  Filename:String;
  SearchRec:TSearchRec;
  StringList:TStringList;
  FileStream:TFileStream;
  WindowHandle:TWindowHandle;
- uartstr:String;
+ Characters:String;
  linecount:Longword;
 
 begin
@@ -117,10 +117,12 @@ begin
    for Count:=0 to StringList.Count - 1 do
     begin
      ConsoleWindowWriteLn(WindowHandle,StringList.Strings[Count]);
-     //Writeln(StringList.Strings[Count]) ;
-     //uartstr := 'testing, testing';
-     //linecount := 1;
-     //SerialWrite(@uartstr, 12, linecount);
+     //uartstr := StringList.Strings[Count] + Chr(13) + Chr(10);
+     linecount := 0;
+     Characters := StringList.Strings[Count] + Chr(13) + Chr(10);
+     SerialWrite(PChar(Characters), Length(Characters), linecount);
+     ConsoleWindowWriteLn(WindowHandle,'uart buffer size is ' + IntToStr(Length(Characters)));
+
      sleep(1000);
     end;
 
