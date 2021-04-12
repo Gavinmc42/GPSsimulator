@@ -26,14 +26,14 @@ uses
   Threads,
   Console,
   Framebuffer,
-  BCM2836,
+  BCM2835,
   SysUtils,
   serial,
   Classes,     {Include the common classes}
   FileSystem,  {Include the file system core and interfaces}
   FATFS,       {Include the FAT file system driver}
   MMC,         {Include the MMC/SD core to access our SD card}
-  BCM2709;     {And also include the MMC/SD driver for the Raspberry Pi}
+  BCM2708;     {And also include the MMC/SD driver for the Raspberry Pi}
 
 {A window handle plus a couple of others.}
 var
@@ -114,10 +114,10 @@ begin
 
    {Iterate the strings and print them to the screen}
    ConsoleWindowWriteLn(WindowHandle,'The contents of the file are:');
+   Count := 0;
    for Count:=0 to StringList.Count - 1 do
     begin
      ConsoleWindowWriteLn(WindowHandle,StringList.Strings[Count]);
-     //uartstr := StringList.Strings[Count] + Chr(13) + Chr(10);
      linecount := 0;
      Characters := StringList.Strings[Count] + Chr(13) + Chr(10);
      SerialWrite(PChar(Characters), Length(Characters), linecount);
